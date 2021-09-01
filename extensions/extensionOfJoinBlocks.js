@@ -7,7 +7,7 @@ class JoinBlocks {
         {
           opcode: 'join3',
           blockType: Scratch.BlockType.REPORTER,
-          text: 'JOIN [1] [2] [3]',
+          text: 'join [1] [2] [3]',
           arguments: {
             1: {
               type: Scratch.ArgumentType.STRING,
@@ -26,7 +26,7 @@ class JoinBlocks {
 		{
           opcode: 'join4',
           blockType: Scratch.BlockType.REPORTER,
-          text: 'JOIN [1] [2] [3] [4]',
+          text: 'join [1] [2] [3] [4]',
           arguments: {
             1: {
               type: Scratch.ArgumentType.STRING,
@@ -49,7 +49,7 @@ class JoinBlocks {
 		{
           opcode: 'join5',
           blockType: Scratch.BlockType.REPORTER,
-          text: 'JOIN [1] [2] [3] [4] [5]',
+          text: 'join [1] [2] [3] [4] [5]',
           arguments: {
             1: {
               type: Scratch.ArgumentType.STRING,
@@ -76,7 +76,7 @@ class JoinBlocks {
 		{
           opcode: 'join6',
           blockType: Scratch.BlockType.REPORTER,
-          text: 'JOIN [1] [2] [3] [4] [5] [6]',
+          text: 'join [1] [2] [3] [4] [5] [6]',
           arguments: {
             1: {
               type: Scratch.ArgumentType.STRING,
@@ -107,7 +107,7 @@ class JoinBlocks {
 		{
           opcode: 'join7',
           blockType: Scratch.BlockType.REPORTER,
-          text: 'JOIN [1] [2] [3] [4] [5] [6] [7]',
+          text: 'join [1] [2] [3] [4] [5] [6] [7]',
           arguments: {
             1: {
               type: Scratch.ArgumentType.STRING,
@@ -142,7 +142,7 @@ class JoinBlocks {
 		{
           opcode: 'join8',
           blockType: Scratch.BlockType.REPORTER,
-          text: 'JOIN [1] [2] [3] [4] [5] [6] [7] [8]',
+          text: 'join [1] [2] [3] [4] [5] [6] [7] [8]',
           arguments: {
             1: {
               type: Scratch.ArgumentType.STRING,
@@ -181,7 +181,7 @@ class JoinBlocks {
 		{
           opcode: 'join9',
           blockType: Scratch.BlockType.REPORTER,
-          text: 'JOIN [1] [2] [3] [4] [5] [6] [7] [8] [9]',
+          text: 'join [1] [2] [3] [4] [5] [6] [7] [8] [9]',
           arguments: {
             1: {
               type: Scratch.ArgumentType.STRING,
@@ -224,7 +224,7 @@ class JoinBlocks {
 		{
           opcode: 'join10',
           blockType: Scratch.BlockType.REPORTER,
-          text: 'JOIN [1] [2] [3] [4] [5] [6] [7] [8] [10]',
+          text: 'join [1] [2] [3] [4] [5] [6] [7] [8] [10]',
           arguments: {
             1: {
               type: Scratch.ArgumentType.STRING,
