@@ -274,7 +274,7 @@ class JoinBlocks {
   
   joinLots(args) {
     let text = "";
-	for (each arg in args) {
+	for (const arg of args) {
 	  text += arg;
 	}
 	return text;
