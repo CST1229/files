@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BetterShellfish
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.0.1
 // @description  A userscript for shellfish (Kiwi IRC) that adds some stuff.
 // @author       CST1229
 // @match        https://web.libera.chat/*
@@ -14,7 +14,7 @@
 // ==/UserScript==
 
 window.setTimeout(function() {
-    'use strict';
+	'use strict';
 	
 	if (!document.querySelector(".kiwi-wrap")) return;
 	
@@ -23,10 +23,17 @@ window.setTimeout(function() {
 	let styleEl;
 	
 	if (storage.getItem("bettershellfish-settings") === null) {
-		setStorage({});
+		setStorage({
+			localUserEdits: {}
+		});
+	}
+	if (getStorage()["localUserEdits"] === undefined) {
+		setStorage(Object.assign(getStorage(), {
+			localUserEdits: {}
+		}));
 	}
 	
-    const usernameCSS = (nick = "", replace = "", showOG = false) => {
+	const usernameCSS = (nick = "", replace = "", showOG = false) => {
 		nick = nick.replaceAll('"', '\\"');
 		nick = nick.replaceAll('\n', '\\n');
 		replace = replace.replaceAll('"', '\\"');
