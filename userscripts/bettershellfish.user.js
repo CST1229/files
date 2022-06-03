@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         BetterShellfish
 // @namespace    http://tampermonkey.net/
-// @version      1.0.1
+// @version      1.1.0
 // @description  A userscript for shellfish (Kiwi IRC) that adds some stuff.
 // @author       CST1229
 // @match        https://web.libera.chat/*
@@ -27,7 +27,8 @@ window.setTimeout(function() {
 			localUserEdits: {}
 		});
 	}
-	if (getStorage()["localUserEdits"] === undefined) {
+	
+	if (getStorage().localUserEdits === undefined) {
 		setStorage(Object.assign(getStorage(), {
 			localUserEdits: {}
 		}));
@@ -40,28 +41,34 @@ window.setTimeout(function() {
 		replace = replace.replaceAll('\n', '\\n');
 		return `
 			.kiwi-messagelist-nick [data-nick="${nick.toLowerCase()}"],
-			div[data-nick="${nick.toLowerCase()}"] .kiwi-nicklist-user-nick,
-			.kiwi-nick[data-nick="${nick}"],
+			.kiwi-messagelist-top > .kiwi-messagelist-nick[data-nick="${nick.toLowerCase()}"],
+			[data-nick="${nick.toLowerCase()}"] .kiwi-nicklist-user-nick,
+			.kiwi-nick[data-bettershellfish-lower-nick="${nick.toLowerCase()}"],
 			.kiwi-avatar[data-nick="${nick.toLowerCase()}"] > .kiwi-avatar-inner,
 			.kiwi-userbox-nick[data-bettershellfish-nick="${nick}"] {
 				font-size: 0.001%;
 			}
 			.kiwi-messagelist-nick [data-nick="${nick.toLowerCase()}"]::before,
-			div[data-nick="${nick.toLowerCase()}"] .kiwi-nicklist-user-nick::before,
-			.kiwi-nick[data-nick="${nick}"]::before,
+			.kiwi-messagelist-top > .kiwi-messagelist-nick[data-nick="${nick.toLowerCase()}"] > .kiwi-messagelist-nick-prefix,
+			.kiwi-messagelist-top > .kiwi-messagelist-nick[data-nick="${nick.toLowerCase()}"]::after,
+			[data-nick="${nick.toLowerCase()}"] .kiwi-nicklist-user-nick::before,
+			.kiwi-nick[data-bettershellfish-lower-nick="${nick.toLowerCase()}"]::before,
 			.kiwi-avatar[data-nick="${nick.toLowerCase()}"] > .kiwi-avatar-inner::before {
 				font-size: 10000000%;
 			}
-			.kiwi-messagelist-nick [data-nick="${nick.toLowerCase()}"]::before {
+			:not(.kiwi-messagelist-top) > .kiwi-messagelist-nick[data-nick="${nick.toLowerCase()}"]::after {
 				content: " ${replace}:";
 			}
+			.kiwi-messagelist-top > .kiwi-messagelist-nick[data-nick="${nick.toLowerCase()}"]::after {
+				content: " ${replace}";
+			}
 			div[data-nick="${nick.toLowerCase()}"] .kiwi-nicklist-user-nick::before,
-			.kiwi-nick[data-nick="${nick}"]::before,
+			.kiwi-nick[data-bettershellfish-lower-nick="${nick.toLowerCase()}"]::before,
 			.kiwi-userbox-nick[data-bettershellfish-nick="${nick}"]::before {
 				content: "${replace}${showOG ? " ("+nick+")" : ""}";
 			}
 
-			.kiwi-avatar[data-nick="${nick.toLowerCase()}"] > .kiwi-avatar-inner::before {
+			.kiwi-avatar[data-nick="${nick.toLowerCase()}"]:not(.kiwi-avatar--image) > .kiwi-avatar-inner::before {
 				content: "${replace[0]}";
 			}
 			.kiwi-userbox-nick[data-bettershellfish-nick="${nick}"]::before {
@@ -84,7 +91,7 @@ window.setTimeout(function() {
 			}
 			.kiwi-messagelist-nick[data-nick="${nick.toLowerCase()}"],
 			.kiwi-nicklist-user[data-nick="${nick.toLowerCase()}"] .kiwi-nicklist-user-nick,
-			.kiwi-nick[data-nick="${nick}"],
+			.kiwi-nick[data-bettershellfish-lower-nick="${nick.toLowerCase()}"],
 			.kiwi-userbox-nick[data-bettershellfish-nick="${nick}"] {
 				color: ${color} !important;
 			}
@@ -178,7 +185,12 @@ window.setTimeout(function() {
 	
 	const observerFunc = function(mutationsList, observer) {
 		const userboxNick = document.getElementsByClassName("kiwi-userbox-nick")[0];
-		if (userboxNick) userboxNick.dataset.bettershellfishNick = userboxNick.textContent
+		if (userboxNick) userboxNick.dataset.bettershellfishNick = userboxNick.textContent;
+		
+		document.querySelectorAll(".kiwi-messagelist-body .kiwi-nick:not([data-bettershellfish-lower-nick])").forEach(el => {
+			// For the ping userstyle to work with pings that don't have exact case
+			el.dataset.bettershellfishLowerNick = el.textContent.toLowerCase();
+		});
 		
 		const settings = getStorage();
 		const actions = document.getElementsByClassName("kiwi-userbox-actions")[0];
@@ -250,6 +262,7 @@ window.setTimeout(function() {
 				let localColorInput = Object.assign(document.createElement("input"), {
 					type: "color",
 					disabled: true,
+					title: "There is a checkbox next to this input, check that to enable the local color",
 					name: "bettershellfish-localcolorinput",
 					className: "u-input"
 				});
