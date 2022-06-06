@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shellfish PFPs
 // @namespace    https://cst1229.github.io/
-// @version      0.9.1
+// @version      0.9.2
 // @description  Allows setting a PFP in shellfish (Kiwi IRC). To set your PFP, set shellfishpfps.pfp in the advanced settings to an image URL. In beta, stuff might break.
 // @author       CST1229
 // @match        https://web.libera.chat/*
@@ -39,15 +39,16 @@ window.setTimeout(function() {
 			// someone sent the pfp to the client by themselves
 			// instead of responding to a request
 			addPfp(network.id, event.nick, returnVal);
+			return;
 		} catch (e) {}
 		
 		let target = event.from_server ?
 			event.hostname :
 			event.nick;
 
-		const pfp = kiwi.state.getSetting("user_settings.shellfishpfps.pfp");
-		let pfpUrl = "";
-		if (pfp) pfpUrl = pfp;
+		const pfpUrl = getPfp(network);
+		let pfp = "-";
+		if (pfpUrl) pfp = pfpUrl;
 		
 		sendPfp(network, true, target, pfp);
 	});
@@ -64,16 +65,8 @@ window.setTimeout(function() {
 		addPfp(network.id, event.nick, returnVal);
 	});
 	kiwi.on("network.connecting", function(connectingEvent) {
-		const pfp = kiwi.state.getSetting("user_settings.shellfishpfps.pfp");
-
-		try {
-			new URL(pfp);
-		} catch (e) {
-			return;
-		}
-		
 		kiwi.once("irc.connected", function(connectedEvent) {
-			addPfp(connectingEvent.network.id, connectingEvent.network.nick, pfp);
+			sendPfpToNetwork(connectingEvent.network, getPfp(connectingEvent.network));
 		});
 	});
 	
@@ -106,12 +99,24 @@ window.setTimeout(function() {
 		if (pfpSetting !== kiwi.state.getSetting("user_settings.shellfishpfps.pfp")) {
 			pfpSetting = kiwi.state.getSetting("user_settings.shellfishpfps.pfp");
 			for (const network of kiwi.state.networks) {
-				for (const user in network.users) {
-					sendPfp(network, false, network.users[user].nick, pfpSetting);
-				}
+				sendPfpToNetwork(network, getPfp(network));
 			}
 		}
 	}, 1000);
+	
+	function sendPfpToNetwork(network, pfp) {
+		addPfp(network.id, network.nick, pfp);
+		for (const user in network.users) {
+			sendPfp(network, false, network.users[user].nick, pfp);
+		}
+	}
+	
+	function getPfp(network) {
+		const defaultPfp = kiwi.state.getSetting("user_settings.shellfishpfps.pfp");
+		const nickPfp = kiwi.state.getSetting("user_settings.shellfishpfps.pfp.nick." + network.nick);
+		if (nickPfp !== undefined) return nickPfp;
+		return defaultPfp;
+	}
 	
 	console.log("pfps thing started", kiwi);
 }, 1000);
