@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shellfish PFPs
 // @namespace    https://cst1229.github.io/
-// @version      0.9.2
+// @version      1.0
 // @description  Allows setting a PFP in shellfish (Kiwi IRC). To set your PFP, set shellfishpfps.pfp in the advanced settings to an image URL. In beta, stuff might break.
 // @author       CST1229
 // @match        https://web.libera.chat/*
@@ -24,13 +24,16 @@ window.setTimeout(function() {
 	
 	let pfpSetting = kiwi.state.getSetting("user_settings.shellfishpfps.pfp");
 	
-	kiwi.on('irc.userlist', function(event, network) {
-		event.users.forEach(function(user) {
-			network.frameworkClient.ctcpRequest(user.nick, "PFP");
-		});
+	kiwi.on("irc.join", function(event, network) {
+		const pfp = getPfp(network);
+		if (event.nick === network.nick) {
+			sendPfp(network, false, event.channel, pfp);
+		} else {
+			sendPfp(network, false, event.nick, pfp);
+		}
 	});
 
-	kiwi.on("irc.ctcp request", function(event, network, ircEventObj) {
+	kiwi.on("irc.ctcp request", function(event, network) {
 		if (event.type !== "PFP") return;
 		const returnVal = event.message.substring(event.type.length + 1);
 		try {
@@ -63,11 +66,6 @@ window.setTimeout(function() {
 		}
 		
 		addPfp(network.id, event.nick, returnVal);
-	});
-	kiwi.on("network.connecting", function(connectingEvent) {
-		kiwi.once("irc.connected", function(connectedEvent) {
-			sendPfpToNetwork(connectingEvent.network, getPfp(connectingEvent.network));
-		});
 	});
 	
 	function sendPfp(network, isReply, sendTo, pfp) {
@@ -106,8 +104,9 @@ window.setTimeout(function() {
 	
 	function sendPfpToNetwork(network, pfp) {
 		addPfp(network.id, network.nick, pfp);
-		for (const user in network.users) {
-			sendPfp(network, false, network.users[user].nick, pfp);
+		for (const buffer in network.buffers) {
+			if (!buffer.name) continue;
+			if (buffer.name.startsWith("#")) sendPfp(network, false, buffer.name, pfp);
 		}
 	}
 	
