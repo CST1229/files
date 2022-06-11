@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Shellfish PFPs
 // @namespace    https://cst1229.github.io/
-// @version      1.0.1
+// @version      1.0.2
 // @description  Allows setting a PFP in shellfish (Kiwi IRC). To set your PFP, set shellfishpfps.pfp in the advanced settings to an image URL. In beta, stuff might break.
 // @author       CST1229
 // @match        https://web.libera.chat/*
@@ -106,8 +106,10 @@ window.setTimeout(function() {
 	}, 1000);
 	
 	function sendPfpToNetwork(network, pfp) {
+		if (!network) return;
+		
 		addPfp(network.id, network.nick, pfp);
-		for (const buffer in network.buffers) {
+		for (const buffer of network.buffers) {
 			if (!buffer.name) continue;
 			if (buffer.name.startsWith("#")) sendPfp(network, false, buffer.name, pfp);
 		}
