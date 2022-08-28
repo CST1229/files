@@ -16,5 +16,5 @@ vm.runtime.once("PROJECT_LOADED", async function() {
   
   if (!projectUrl) return;
   
-  vm.loadProject(await (await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(projectUrl)}`)).blob());
+  vm.loadProject(await (await fetch(`https://api.allorigins.win/raw?url=${encodeURIComponent(projectUrl)}`)).arrayBuffer());
 });
