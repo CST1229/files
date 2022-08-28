@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         TurboWarp Scripts
 // @namespace    http://tampermonkey.net/
-// @version      1.0
+// @version      1.1
 // @description  Quick userscript to load other userscripts on TurboWarp via load_plugin and project_plugin, because GarboMuffin won't do it.
 // @author       CST1229
 // @match        https://turbowarp.org/*
