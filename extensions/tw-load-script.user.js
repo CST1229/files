@@ -10,6 +10,9 @@
 
 async function loadScripts() {
   const searchParams = new URL(location.href).searchParams;
+  function getUrl(url) {
+    return searchParams.has("ao") ? `https://api.allorigins.win/raw?url=${encodeURIComponent(url)}` : url;
+  }
 
   let scriptsToLoad = [];
   let extsToLoad = [];
@@ -21,13 +24,13 @@ async function loadScripts() {
       extsToLoad.push(value);
     }
   });
-  const scriptsLoad = Promise.all(scriptsToLoad.map(url => fetch(url)));
+  const scriptsLoad = Promise.all(scriptsToLoad.map(url => fetch(getUrl(url))));
   const scriptsText = Promise.all((await scriptsLoad).map(resp => resp.text()));
   for (const script of await scriptsText) {
     (new Function(script))();
   };
 
-  const extsLoad = Promise.all(extsToLoad.map(url => fetch(url)));
+  const extsLoad = Promise.all(extsToLoad.map(url => fetch(getUrl(url))));
   const extsText = Promise.all((await extsLoad).map(resp => resp.text()));
 
   vm.runtime.once("PROJECT_LOADED", async function() {
@@ -41,7 +44,7 @@ function checkVm() {
   if (window.vm) {
     loadScripts();
   } else {
-    setTimeout(checkVm, 500);
+    setTimeout(checkVm, 250);
   }
 }
 checkVm();
