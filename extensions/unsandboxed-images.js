@@ -107,6 +107,7 @@ class ImagesExt {
 				break;
 				case "image/png":
 				case "image/bmp":
+				case "image/jpeg":
 					const image = new Image();
 					image.crossOrigin = "anonymous";
 					image.src = IMAGEURL;
@@ -171,4 +172,4 @@ if (typeof window === "undefined" || !window.vm) {
 	const serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
 	window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
 	console.log("Unsandboxed mode detected. Good.");
-}; 
+};
