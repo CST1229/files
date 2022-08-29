@@ -12,13 +12,27 @@ class ImagesExt {
 		// To prevent destroying of images that weren't made with the extension
 		this.createdImages = new Set();
 		
-		// If we haven't already and we can, create the pen layer
-		if (runtime.ext_pen && !runtime.renderer._penSkinId) {
-			runtime.ext_pen._getPenLayerID();
+		this._createPenIfNeeded();
+	}
+	
+	_createPenIfNeeded() {
+		// If we haven't already, add the pen extension
+		// and create a pen layer using its functions
+		if (this.runtime.renderer._penSkinId) return;
+		if (!this.runtime.ext_pen) {
+			try {
+				window.vm.extensionManager.loadExtensionIdSync("pen");
+			} catch(e) {
+				console.error("Error adding pen:", e);
+				return;
+			}
+		}
+		if (this.runtime.ext_pen) {
+			this.runtime.ext_pen._getPenLayerID.call(this.runtime.ext_pen);
 		}
 	}
 
-	getInfo () {
+	getInfo() {
 		return {
 			"id": 'images',
 			"name": 'Images',
@@ -132,7 +146,6 @@ class ImagesExt {
 			this.runtime.renderer.penStamp(
 				this.runtime.renderer._penSkinId, IMG
 			);
-			console.log("drawn");
 		} catch(e) {
 			console.error("Error drawing image:", e);
 		}
@@ -158,4 +171,4 @@ if (typeof window === "undefined" || !window.vm) {
 	const serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
 	window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
 	console.log("Unsandboxed mode detected. Good.");
-};
+}; 
