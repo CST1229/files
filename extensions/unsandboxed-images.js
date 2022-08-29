@@ -3,33 +3,8 @@ class ImagesExt {
 		this.runtime = runtime;
 		this.window = window;
 		
-		if (!runtime.renderer._layerGroups.imagesExt) {
-			const layers = Object.keys(runtime.renderer._layerGroups);
-			layers.unshift("imagesExt");
-			runtime.renderer.setLayerGroupOrdering(layers);
-		}
-		
 		// To prevent destroying of images that weren't made with the extension
 		this.createdImages = new Set();
-		
-		this._createPenIfNeeded();
-	}
-	
-	_createPenIfNeeded() {
-		// If we haven't already, add the pen extension
-		// and create a pen layer using its functions
-		if (this.runtime.renderer._penSkinId) return;
-		if (!this.runtime.ext_pen) {
-			try {
-				window.vm.extensionManager.loadExtensionIdSync("pen");
-			} catch(e) {
-				console.error("Error adding pen:", e);
-				return;
-			}
-		}
-		if (this.runtime.ext_pen) {
-			this.runtime.ext_pen._getPenLayerID.call(this.runtime.ext_pen);
-		}
 	}
 
 	getInfo() {
@@ -119,7 +94,7 @@ class ImagesExt {
 				break;
 			}
 			
-			const drawableId = this.runtime.renderer.createDrawable("imagesExt");
+			const drawableId = this.runtime.renderer.createDrawable("sprite");
 			const img = this.runtime.renderer._allDrawables[drawableId];
 			img.updateVisible(false);
 			img.skin = vm.runtime.renderer._allSkins[skinId];
@@ -156,8 +131,8 @@ class ImagesExt {
 			if (
 				!this.runtime.renderer._allDrawables[IMG] || !this.createdImages.has(IMG)
 			) return;
-			this.runtime.renderer.destroyDrawable(IMG, "imagesExt");
 			this.createdImages.delete(IMG);
+			this.runtime.renderer.destroyDrawable(IMG, "sprite");
 		} catch(e) {
 			console.error("Error deleting image:", e);
 		}
