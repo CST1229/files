@@ -153,7 +153,6 @@ class ImagesExt {
 const extensionClass = ImagesExt;
 if (typeof window === "undefined" || !window.vm) {
 	console.log("This extension cannot run in sandboxed mode.");
-	return;
 } else {
 	const extensionInstance = new extensionClass(window.vm.extensionManager.runtime, window);
 	const serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
