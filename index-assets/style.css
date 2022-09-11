@@ -1,0 +1,68 @@
+body {
+	margin: 16px;
+}
+
+.files {
+	font-family: system-ui;
+	background-color: white;
+	color: black;
+	user-select: none;
+	font-size: 11pt;
+}
+
+.files .file, .files .folder > summary {
+	padding: 1px;
+	margin: 1px;
+}
+
+.files .file:hover,
+.files .folder > summary:hover {
+	background: #e5f3ff;
+}
+.files .file:active,
+.files .file:focus,
+.files .folder > summary:focus {
+	background: #cce8ff;
+	outline: solid 1px #89caff;
+}
+
+.files .folder {
+	list-style-type: none;
+	padding-left: 1.2em;
+}
+.files .file {
+	color: inherit;
+	display: block;
+	text-decoration: none;
+	cursor: default;
+}
+
+.files .folder > summary {
+	margin-left: -1.2em;
+	cursor: default;
+	list-style: none;
+}
+.files .folder > summary::before {
+	content: "˃ 📁";
+	color: #a6a6a6;
+	
+	margin-right: 2px;
+	margin-left: 3px;
+}
+.files .folder[open] > summary::before {
+	content: "˅ 📁";
+	color: #404040;
+}
+
+.files .file::before {
+	content: "📄";
+	margin-right: 2px;
+}
+.files .file[icon]::before {
+	content: attr(icon);
+}
+
+.files hr {
+	border: solid 1px #ddd;
+	border-bottom: none;
+}
