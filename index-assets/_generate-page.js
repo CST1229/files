@@ -37,8 +37,8 @@ function renderDirectory(path, extraFiles = "") {
 	let dirs = [];
 	let files = [];
 	for (const entry of dir) {
-		if (entry.name === ".git") continue;
 		if (entry.isDirectory()) {
+			if (entry.name.startsWith(".")) continue;
 			dirs.push(entry);
 		} else if (entry.isFile()) {
 			files.push(entry);
