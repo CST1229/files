@@ -60,7 +60,7 @@ function renderDirectory(path, extraFiles = "") {
 		renderedDir += renderTemplate(
 			"file",
 			{
-				PATH: path,
+				PATH: path + "/" + file.name,
 				ICON: icons[splitName[splitName.length - 1]] || icons.file,
 				FILENAME: file.name
 			}
