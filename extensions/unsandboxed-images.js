@@ -19,7 +19,7 @@ class ImagesExt {
 					"arguments": {
 						"IMAGEURL": {
 							"type": "string",
-							"defaultValue": 'https://svelte.meower.org/assets/logo.22ae43ae.svg',
+							"defaultValue": 'https://assets.scratch.mit.edu/cf81f5861ef30bca31bf0601486eba9a.png',
 						},
 					},
 				},
