@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Reshare Detector
 // @namespace    https://cst1229.github.io/
-// @version      1.0
+// @version      1.1.0
 // @description  Adds a button to the top left corner of projects on the Scratch's Explore page to check if a project has been reshared or not (due to the reshare glitch). Inspired by Reshow: https://scratch.mit.edu/discuss/topic/664257/
 // @author       CST1229
 // @match        *://scratch.mit.edu/explore/*
@@ -26,8 +26,24 @@
 		UNSHARED: "data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg%3E%3Crect width='16' height='16' fill='white'/%3E%3Ccircle cx='8' cy='8' r='7.5' stroke='%234D97FF'/%3E%3Cpath clip-path='url(%23clip)' d='M4 8L6.66667 11L12 5' stroke='%234D97FF' stroke-width='2' stroke-linecap='round'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip'%3E%3Crect id='clipRect' width='16' height='16'/%3E%3C/clipPath%3E%3C/defs%3E%3Cstyle%3E%0A@keyframes clip %7B%0Afrom %7B%0Atransform: translateX(-16px);%0A%7D%0Ato %7B%0Atransform: translateX(0);%0A%7D%0A%7D%0A%23clipRect %7B%0Aanimation: clip 0.5s ease-out running;%0A%7D%0A%3C/style%3E%3C/svg%3E%0A",
 		ERROR: "data:image/svg+xml,%3Csvg width='16' height='16' viewBox='0 0 16 16' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cg clip-path='url(%23clip0_4_31)'%3E%3Crect width='16' height='16' fill='white'/%3E%3Ccircle cx='8' cy='8' r='7.5' stroke='%23FF6767'/%3E%3Cpath class='qmark' d='M6 6.5C6 4.5 7.5 4 8.5 4C9.5 4 11 5 11 6.5C11 8 8 8 8 10.5' stroke='%23FF6767' stroke-width='2'/%3E%3Ccircle class='qmark' cx='8' cy='12.5' r='1' fill='%23FF6767'/%3E%3C/g%3E%3Cdefs%3E%3CclipPath id='clip0_4_31'%3E%3Crect width='16' height='16'/%3E%3C/clipPath%3E%3C/defs%3E%3Cstyle%3E%0A@keyframes shake %7B%0Afrom %7B%0Atransform: translateX(0px);%0A%7D%0A25%25 %7B%0Atransform: translateX(2px);%0A%7D%0A50%25 %7B%0Atransform: translateX(0px);%0A%7D%0A75%25 %7B%0Atransform: translateX(-2px);%0A%7D%0Ato %7B%0Atransform: translateX(0px);%0A%7D%0A%7D%0A.qmark %7B%0Aanimation: shake 0.1s linear 2 running;%0A%7D%0A%3C/style%3E%3C/svg%3E%0A",
 	};
+	const iconsColor = {
+		UNKNOWN: "#7F7F7F",
+		LOADING: "#7F7F7F",
+		GOOD: "#1DB940",
+		RESHARED: "#FF6767",
+		UNSHARED: "#4D97FF",
+		ERROR: "#FF6767",
+	};
+	const iconsText = {
+		UNKNOWN: "",
+		LOADING: "",
+		GOOD: "Not Reshared",
+		RESHARED: "Reshared",
+		UNSHARED: "Unshared/Old",
+		ERROR: "Error",
+	};
 	const iconsAlt = {
-		UNKNOWN: "Click to check reshared status",
+		UNKNOWN: "Click to check reshared status; shift-click to toggle always showing status",
 		LOADING: "Loading...",
 		GOOD: "Project has not been reshared (only shared once in past year)",
 		RESHARED: "Project has been reshared in past year",
@@ -50,7 +66,6 @@
 					padding: 0;
 					padding-left: 8px;
 					padding-top: 8px;
-					width: 24px;
 					height: 24px;
 					cursor: pointer;
 					
@@ -67,16 +82,44 @@
 					opacity: 0;
 					transition: opacity 0.033s linear;
 				}
+				
+				.rsd-icon {
+					margin: 0 3px;
+				}
+				
 				.thumbnail.project:hover .rsd-button,
 				.thumbnail.project .rsd-button.always-show {
 					opacity: 1;
 				}
-			`
-		})
+				
+				:root.rsd-always-show .rsd-button {
+					opacity: 1;
+				}
+				
+				.rsd-text {
+					font-weight: bold;
+					margin-left: 2px;
+					margin-right: 5px;
+				}
+				
+				:root:not(.rsd-always-show) .rsd-text, .rsd-text.rsd-empty {
+					display: none;
+				}
+		`})
 	);
 	
 	function setIcon(el, type, moreText = "") {
 		el.src = icons[type] + "#" + (counter++);
+		if (el.parentElement && el.parentElement.querySelector(".rsd-text")) {
+			const text = el.parentElement.querySelector(".rsd-text");
+			text.style.color = iconsColor[type];
+			text.textContent = iconsText[type];
+			if (text.textContent === "") {
+				text.classList.add("rsd-empty");
+			} else {
+				text.classList.remove("rsd-empty");
+			}
+		}
 		
 		let alt = (iconsAlt[type]) || "This message should not appear";
 		if (moreText) alt += ` (${moreText})`;
@@ -121,12 +164,22 @@
 		icon.width = 18;
 		icon.height = 18;
 		icon.className = "rsd-icon";
-		setIcon(icon, "UNKNOWN");
+		
+		const text = document.createElement("span");
+		text.className = "rsd-text";
+		
 		btn.appendChild(icon);
+		btn.appendChild(text);
+		
+		setIcon(icon, "UNKNOWN");
 		
 		let loading = false;
-		btn.addEventListener("click", async () => {
+		btn.addEventListener("click", async (ev) => {
 			if (loading) return;
+			if (ev.shiftKey) {
+				document.documentElement.classList.toggle("rsd-always-show");
+				return;
+			}
 			try {
 				btn.classList.add("always-show");
 				setIcon(icon, "LOADING");
