@@ -15,6 +15,9 @@ function renderTemplate(name, props = {}) {
 	try {
 		if (!templateCache[name]) {
 			templateCache[name] = fs.readFileSync(`index-assets/template-${name}.html`, "utf8");
+			if (typeof templateCache[name] !== "string") {
+				throw new Error("Could not read file");
+			}
 		}
 		let templateFile = templateCache[name];
 		for (const prop of Object.keys(props)) {
