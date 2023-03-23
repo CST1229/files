@@ -21,7 +21,7 @@ function renderTemplate(name, props = {}) {
 		}
 		let templateFile = templateCache[name];
 		for (const prop of Object.keys(props)) {
-			templateFile = templateFile.replaceAll(
+			templateFile = templateFile.replace(
 				new RegExp(`\\{\\{${prop.replaceAll(/([^A-Za-z0-9])/g, "\\$1")}\\}\\}`, "g"),
 				props[prop]
 			);
