@@ -362,5 +362,17 @@
     }
   }
 
-  Scratch.extensions.register(new ImagesExt(Scratch.vm));
+  if (Scratch) {
+    if (!Scratch.extensions.unsandboxed) throw new Error("This extension cannot run in sandboxed mode.");
+    Scratch.extensions.register(new ImagesExt(Scratch.vm));
+  } else {
+	const extensionClass = ImagesExt;
+    if (typeof window === "undefined" || !window.vm) {
+      throw new Error("This extension cannot run in sandboxed mode.");
+    } else {
+      const extensionInstance = new extensionClass(window.vm.extensionManager.runtime, window);
+      const serviceName = window.vm.extensionManager._registerInternalExtension(extensionInstance);
+      window.vm.extensionManager._loadedExtensions.set(extensionInstance.getInfo().id, serviceName);
+    };
+  }
 })(globalThis.Scratch);
