@@ -1,7 +1,7 @@
 // ==UserScript==
 // @name         Scratch FPS Fix
 // @namespace    https://cst1229.github.io
-// @version      1.0
+// @version      1.0.1
 // @description  TRIES to fix consistent project lag (projects running at 22 FPS) on Firefox. Not very tested
 // @author       CST1229
 // @match        https://turbowarp.org/*
@@ -38,8 +38,10 @@
 				start = time;
 			}
 			try {
+				let stepped = false;
 				while (time >= (start + interval)) {
-					stepCallback();
+					if (!stepped) stepCallback();
+					stepped = true;
 					start += interval;
 				}
 			} finally {
