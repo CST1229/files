@@ -1,0 +1,116 @@
+/*
+    Styles GitHub's navbar to look more like it did before it got updated (with the black background).
+    Mostly a personal userstyle, only designed to work with light mode.
+    Also does some other fixes, like removing the Copilot stuff that I don't need.
+*/
+
+.AppHeader-CopilotChat, .copilotPreview__container {
+    display: none !important;
+}
+
+.AppHeader {
+    --AppHeader-bg: var(--fgColor-default, var(--color-fg-default));
+}
+.AppHeader-globalBar {
+    --color-btn-bg: var(--fgColor-default, var(--color-fg-default));
+    --fgColor-muted: #ddd;
+    color: white;
+}
+.AppHeader-globalBar .AppHeader-globalBar-start .octicon,
+.AppHeader-globalBar .AppHeader-globalBar-end .AppHeader-search-wrap .octicon,
+.AppHeader-globalBar .AppHeader-globalBar-end .AppHeader-actions .octicon,
+.AppHeader-globalBar .AppHeader-globalBar-end notification-indicator .octicon,
+.Overlay-closeButton .octicon {
+    filter: brightness(0) invert(1);
+}
+.AppHeader-globalBar {
+    padding: 12px !important;
+}
+
+.AppHeader-localBar {
+    background-color: var(--bgColor-inset, var(--color-canvas-inset));
+    box-shadow: inset 0 -1px 0 var(--borderColor-muted, var(--color-border-muted));
+}
+.AppHeader-localBar .UnderlineNav {
+    box-shadow: none;
+    min-height: 2.75rem;
+}
+
+.SidePanel.Overlay {
+    background-color: var(--fgColor-default, var(--color-fg-default));
+    border-radius: 0 !important;
+}
+.SidePanel.Overlay .ActionList .ActionListItem *,
+.SidePanel.Overlay > .Overlay-header > .Overlay-headerContentWrap {
+    color: white;
+}
+.Overlay-closeButton:focus, .Overlay-closeButton {
+    transition: none;
+}
+.Overlay-closeButton:focus, .Overlay-closeButton:hover {
+    background-color: var(--control-transparent-bgColor-hover, var(--color-action-list-item-default-hover-bg));
+}
+
+.AppHeader-globalBar .Button,
+.AppHeader-globalBar .AppHeader-globalBar .AppHeader-search input[type="search"], .AppHeader-globalBar .AppHeader-globalBar .AppHeader-search .AppHeader-searchButton {
+    border-color: #fff5;
+    box-shadow: none;
+}
+.AppHeader-globalBar .Button:hover, .AppHeader-globalBar .Button:focus,
+.AppHeader-globalBar .AppHeader-globalBar .AppHeader-search input[type="search"]:hover,
+.AppHeader-globalBar .AppHeader-globalBar .AppHeader-search input[type="search"]:focus,
+.AppHeader-globalBar .AppHeader-globalBar .AppHeader-search .AppHeader-searchButton:hover,
+.AppHeader-globalBar .AppHeader-globalBar .AppHeader-search .AppHeader-searchButton:focus {
+    background-color: #fff5 !important;
+    border-color: #fff5 !important;
+}
+
+.UnderlineNav-item.selected::after, .UnderlineNav-item[aria-current]:not([aria-current="false"])::after, .UnderlineNav-item[role="tab"][aria-selected="true"]::after {
+    bottom: calc(50% - 22px);
+}
+
+.details-overlay .UnderlineNav-item {
+    padding: var(--control-medium-paddingInline-condensed, 0.5rem)
+}
+
+.AppHeader-searchButton {
+    color: #fffa !important;
+}
+.AppHeader-searchButton .AppHeader-search-kbd {
+    border-color: #fffa !important;
+}
+
+#notification-shelf {
+    padding: 1rem;
+}
+
+.SidePanel.Overlay .FormControl-input {
+    background: none;
+    border: solid 1px #fffa;
+}
+.SidePanel.Overlay .FormControl-input::placeholder {
+    color: #fffa;
+}
+.SidePanel.Overlay .FormControl-input:not([type="checkbox"], [type="radio"]):focus-visible,
+.SidePanel.Overlay .FormControl-select:not([type="checkbox"], [type="radio"]):focus-visible,
+.SidePanel.Overlay .FormControl-textarea:not([type="checkbox"], [type="radio"]):focus-visible {
+    box-shadow: none;
+    border-color: #fffa;
+    outline: solid 1px #fffa;
+}
+
+.search-suggestions {
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+}
+
+.Overlay-backdrop--center, .AppHeader-globalBar .Popover {
+    color: var(--fgColor-default, var(--color-fg-default));
+}
+.SidePanel.Overlay .color-fg-muted,
+.ActionList-sectionDivider-title {
+    color: white !important;
+}
+.SidePanel.Overlay .text-light.text-small {
+    font-weight: normal !important;
+}
