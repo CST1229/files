@@ -1,0 +1,18 @@
+/* Removes the unnecessary titlebar from the web version of Discord, repositioning the inbox and help buttons to be like before the UI redesign. */
+
+[class*="toolbar__"] {
+    position: relative;
+    right: 90px;
+}
+[class*="trailing_"] {
+    position: fixed;
+    top: 0.55em;
+    right: 0.8em;
+    z-index: 100000;
+}
+[class*="guilds"] [class*="scrollerBase"] {
+    padding-top: 0.5em;
+}
+:root {
+    --custom-app-top-bar-height: 0;
+}
