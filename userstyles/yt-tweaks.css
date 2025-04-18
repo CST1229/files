@@ -7,6 +7,11 @@
     display: none;
 }*/
 
+/* Hide members-only videos in places where they shouldn't be (you can't watch them anyways!) */
+ytd-rich-item-renderer:has(.badge-style-type-members-only) {
+    display: none;
+}
+
 /* I think this disables the like and subscribe button highlighting */
 .smartimation__border,
 .smartimation__background {
