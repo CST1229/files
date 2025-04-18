@@ -1,0 +1,142 @@
+/* YT Tweaks */
+
+/* CST's tweaks to YouTube that he uses. Mainly removing some of the more annoying stuff */
+
+/* Why the beck did they decide to put the current channel in the recommendations sidebar this is useless please murder it */
+/*ytd-watch-next-secondary-results-renderer ytd-channel-renderer {
+    display: none;
+}*/
+
+/* I think this disables the like and subscribe button highlighting */
+.smartimation__border,
+.smartimation__background {
+    display: none;
+}
+
+/* Hide chapter titles */
+.ytp-chapter-container {
+    display: none;
+}
+
+/* No more community posts */
+ytd-rich-grid-row ytd-rich-item-renderer:has(ytd-post-renderer) {
+    display: none;
+}
+
+/* Expand comments by default, because occasionally it breaks */
+.ytd-expander {
+    --ytd-expander-max-lines: 1000000;
+}
+ytd-expander > #more {
+    display: none;
+}
+
+/* De-round thumbnails and the video player */
+ytd-watch-flexy[rounded-player] #ytd-player.ytd-watch-flexy {
+    border-radius: 0;
+}
+ytd-thumbnail[size="medium"] a.ytd-thumbnail, ytd-thumbnail[size="medium"]::before {
+    border-radius: 0;
+}
+
+/* Make the subscribe button red and not a pill */
+.yt-spec-button-shape-next--mono.yt-spec-button-shape-next--filled {
+    background-color: red;
+}
+.yt-spec-button-shape-next--size-m:not(.yt-spec-button-shape-next--segmented-start):not(.yt-spec-button-shape-next--segmented-end) {
+    border-radius: 5px !important;
+}
+
+/* Kill Shorts */
+ytd-reel-shelf-renderer:has(ytm-shorts-lockup-view-model) {
+    display: none;
+}
+
+/* Make the transcript resizable */
+ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-searchable-transcript"] {
+    resize: vertical;
+    max-height: unset !important;
+    height: var(--ytd-watch-flexy-panel-max-height);
+}
+ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-searchable-transcript"] > #content {
+    position: relative;
+}
+ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-searchable-transcript"] > #content > ytd-transcript-renderer,
+ytd-engagement-panel-section-list-renderer[target-id="engagement-panel-searchable-transcript"] ytd-transcript-renderer > #content,
+ytd-transcript-segment-list-renderer {
+    height: 100%;
+}
+
+/* This was for II S2E18 spoilers
+ytd-rich-item-renderer:has([aria-label*="E18"]) *,
+ytd-rich-item-renderer:has([aria-label*="I18"]) *,
+ytd-rich-item-renderer:has([aria-label*="I 18"]) *,
+ytd-rich-item-renderer:has([aria-label*="isode 18"]) *,
+ytd-rich-item-renderer:has([aria-label*="ISODE 18"]) *,
+ytd-rich-item-renderer:has([aria-label*="y 18"]) *,
+ytd-rich-item-renderer:has([aria-label*="oiler"]) *,
+ytd-rich-item-renderer:has([aria-label*="leak"]) *,
+ytd-rich-item-renderer:has([aria-label*="LEAK"]) *,
+ytd-rich-item-renderer:has([aria-label*="Leak"]) *,
+ytd-rich-item-renderer:has([aria-label*="OILER"]) *,
+ytd-rich-item-renderer:has([aria-label*="ephone"]) *,
+ytd-rich-item-renderer:has([aria-label*="ePhone"]) *,
+ytd-rich-item-renderer:has([aria-label*="Cobs"]) *,
+ytd-rich-item-renderer:has([aria-label*="cobs"]) *,
+ytd-rich-item-renderer:has([aria-label*="ovie"]) *,
+ytd-rich-item-renderer:has([aria-label*="OVIE"]) *,
+ytd-rich-item-renderer:has([aria-label*="2 18"]) * {
+    opacity: 0;
+}
+
+ytd-rich-item-renderer:has([aria-label*="E18"]) *,
+ytd-rich-item-renderer:has([aria-label*="I18"]) *,
+ytd-rich-item-renderer:has([aria-label*="I 18"]) *,
+ytd-rich-item-renderer:has([aria-label*="isode 18"]) *,
+ytd-rich-item-renderer:has([aria-label*="ISODE 18"]) *,
+ytd-rich-item-renderer:has([aria-label*="y 18"]) *,
+ytd-rich-item-renderer:has([aria-label*="leak"]) *,
+ytd-rich-item-renderer:has([aria-label*="LEAK"]) *,
+ytd-rich-item-renderer:has([aria-label*="Leak"]) *,
+ytd-rich-item-renderer:has([aria-label*="oiler"]) *,
+ytd-rich-item-renderer:has([aria-label*="OILER"]) *,
+ytd-rich-item-renderer:has([aria-label*="2 18"]) * {
+    cursor: not-allowed;
+}
+
+
+ytd-compact-video-renderer:has([aria-label*="E18"]) *,
+ytd-compact-video-renderer:has([aria-label*="I18"]) *,
+ytd-compact-video-renderer:has([aria-label*="I 18"]) *,
+ytd-compact-video-renderer:has([aria-label*="isode 18"]) *,
+ytd-compact-video-renderer:has([aria-label*="ISODE 18"]) *,
+ytd-compact-video-renderer:has([aria-label*="y 18"]) *,
+ytd-compact-video-renderer:has([aria-label*="oiler"]) *,
+ytd-compact-video-renderer:has([aria-label*="OILER"]) *,
+ytd-compact-video-renderer:has([aria-label*="ephone"]) *,
+ytd-compact-video-renderer:has([aria-label*="ePhone"]) *,
+ytd-compact-video-renderer:has([aria-label*="leak"]) *,
+ytd-compact-video-renderer:has([aria-label*="Leak"]) *,
+ytd-compact-video-renderer:has([aria-label*="LEAK"]) *,
+ytd-compact-video-renderer:has([aria-label*="Cobs"]) *,
+ytd-compact-video-renderer:has([aria-label*="cobs"]) *,
+ytd-compact-video-renderer:has([aria-label*="ovie"]) *,
+ytd-compact-video-renderer:has([aria-label*="OVIE"]) *,
+ytd-compact-video-renderer:has([aria-label*="2 18"]) * {
+    opacity: 0;
+}
+
+ytd-compact-video-renderer:has([aria-label*="E18"]) *,
+ytd-compact-video-renderer:has([aria-label*="I18"]) *,
+ytd-compact-video-renderer:has([aria-label*="I 18"]) *,
+ytd-compact-video-renderer:has([aria-label*="isode 18"]) *,
+ytd-compact-video-renderer:has([aria-label*="ISODE 18"]) *,
+ytd-compact-video-renderer:has([aria-label*="leak"]) *,
+ytd-compact-video-renderer:has([aria-label*="Leak"]) *,
+ytd-compact-video-renderer:has([aria-label*="LEAK"]) *,
+ytd-compact-video-renderer:has([aria-label*="y 18"]) *,
+ytd-compact-video-renderer:has([aria-label*="oiler"]) *,
+ytd-compact-video-renderer:has([aria-label*="OILER"]) *,
+ytd-compact-video-renderer:has([aria-label*="2 18"]) * {
+    cursor: not-allowed;
+}*/
