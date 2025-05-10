@@ -12,8 +12,7 @@ ytd-watch-next-secondary-results-renderer ytd-channel-renderer {
     display: none;
 }
 
-/** Hide AI summary */
-
+/* Hide AI summary */
 #expandable-metadata:has(video-summary-content-view-model) {
     display: none;
 }
