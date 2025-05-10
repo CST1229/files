@@ -2,10 +2,21 @@
 
 /* CST's tweaks to YouTube that he uses. Mainly removing some of the more annoying stuff */
 
-/* Why the beck did they decide to put the current channel in the recommendations sidebar this is useless please murder it */
-/*ytd-watch-next-secondary-results-renderer ytd-channel-renderer {
+/* Hide playlist recommmendations */
+ytd-item-section-renderer:has(ytd-item-section-header-renderer[title-style="ITEM_SECTION_HEADER_TITLE_STYLE_PLAYLIST_RECOMMENDATIONS"]), ytd-item-section-renderer:has(ytd-item-section-header-renderer[title-style="ITEM_SECTION_HEADER_TITLE_STYLE_PLAYLIST_RECOMMENDATIONS"]) + ytd-continuation-item-renderer {
     display: none;
-}*/
+}
+
+/* Why the beck did they decide to put the current channel in the recommendations sidebar this is useless please murder it */
+ytd-watch-next-secondary-results-renderer ytd-channel-renderer {
+    display: none;
+}
+
+/** Hide AI summary */
+
+#expandable-metadata:has(video-summary-content-view-model) {
+    display: none;
+}
 
 /* Why the heck did they decide to make the home page ONLY THREE COLUMNS */
 ytd-two-column-browse-results-renderer > div > ytd-rich-grid-renderer {
