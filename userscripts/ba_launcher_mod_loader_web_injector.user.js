@@ -10,6 +10,20 @@
 // @grant        none
 // ==/UserScript==
 
+/*
+How to install (web):
+- If you have a userscript manager browser extension (like Tampermonkey or Greasemonkey) installed:
+	- Download and enable this userscript: https://cst1229.eu.org/BAMods/special-mods/ba_launcher_mod_loader_web_injector.user.js.
+	- Then visit https://web.barfy.net/modded to use the mod loader.
+	- The mod loader puts itself there; regular web.barfy.net remains the vanilla version!
+- Or, if you have access to your browser's developer console (usually F12 or Ctrl+Shift+I, "Console" tab):
+	- Go to https://web.barfy.net/modded. There will be a 404 page, this is normal.
+	- Then, copy and paste the script at https://cst1229.eu.org/BAMods/special-mods/ba_launcher_mod_loader_web_injector.user.js into your browser's developer console.
+	- The modded game should then start.
+- Otherwise:
+	- Sadly, you're out of luck. :( (unless Barfy adds an official modloader, but that's unlikely)
+*/
+
 (async function() {
 	"use strict";
 	
